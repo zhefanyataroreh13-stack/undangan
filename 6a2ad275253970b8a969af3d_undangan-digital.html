@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Undangan Digital</title>
+    <meta name="description" content="Undangan digital sederhana (gratis & fleksibel) — cukup upload jadi website dan bagikan link." />
+    <style>
+      :root{
+        --bg: #0f172a;
+        --card: rgba(255,255,255,.06);
+        --card2: rgba(255,255,255,.09);
+        --text: #e5e7eb;
+        --muted: rgba(229,231,235,.75);
+        --accent: #ffd166;
+        --accent2: #8ecae6;
+        --line: rgba(255,255,255,.12);
+        --shadow: 0 10px 30px rgba(0,0,0,.35);
+        --radius: 18px;
+        --max: 980px;
+      }
+      *{box-sizing:border-box}
+      body{
+        margin:0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+        color: var(--text);
+        background: radial-gradient(1200px 800px at 20% 0%, #1f2a44 0%, var(--bg) 55%) fixed;
+        line-height:1.45;
+      }
+      a{color:inherit}
+      .wrap{max-width:var(--max); margin:0 auto; padding:22px 16px 80px;}
+      .topbar{
+        position:sticky; top:0;
+        backdrop-filter: blur(10px);
+        background: linear-gradient(to bottom, rgba(15,23,42,.85), rgba(15,23,42,.55));
+        border-bottom: 1px solid var(--line);
+        z-index: 50;
+      }
+      .topbar .wrap{padding:14px 16px}
+      .brand{display:flex; gap:10px; align-items:center; justify-content:space-between}
+      .brand b{letter-spacing:.12em; text-transform:uppercase; font-size:12px; color:var(--muted)}
+      .chip{
+        display:inline-flex; align-items:center; gap:8px;
+        padding:8px 12px; border:1px solid var(--line); border-radius:999px;
+        background: rgba(255,255,255,.04);
+      }
+      .chip span{color:var(--muted); font-size:12px}
+      .chip strong{font-size:12px}
+      .hero{
+        margin-top:18px;
+        padding:28px 18px;
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, var(--card2), var(--card));
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow:hidden;
+        position:relative;
+      }
+      .hero:before{
+        content:"";
+        position:absolute; inset:-2px;
+        background: radial-gradient(700px 380px at 100% 0%, rgba(255,209,102,.25), transparent 60%),
+                    radial-gradient(700px 380px at 0% 100%, rgba(142,202,230,.22), transparent 55%);
+        pointer-events:none;
+      }
+      .hero > *{position:relative}
+      .kicker{color:var(--muted); letter-spacing:.12em; text-transform:uppercase; font-size:12px}
+      h1{margin:10px 0 6px; font-size:40px; line-height:1.05}
+      .names{display:flex; flex-wrap:wrap; gap:10px; align-items:baseline}
+      .names .amp{opacity:.7}
+      .sub{color:var(--muted); margin:0; max-width: 60ch}
+      .grid{
+        margin-top:18px;
+        display:grid;
+        gap:14px;
+        grid-template-columns: repeat(12, 1fr);
+      }
+      .card{
+        border:1px solid var(--line);
+        background: rgba(255,255,255,.045);
+        border-radius: var(--radius);
+        padding:16px;
+      }
+      .card h2{margin:0 0 10px; font-size:16px}
+      .muted{color:var(--muted)}
+      .col-12{grid-column: span 12}
+      .col-6{grid-column: span 12}
+      .col-4{grid-column: span 12}
+      @media (min-width: 860px){
+        .col-6{grid-column: span 6}
+        .col-4{grid-column: span 4}
+      }
+      .divider{height:1px; background:var(--line); margin:14px 0}
+      .btns{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
+      .btn{
+        display:inline-flex; align-items:center; justify-content:center;
+        padding:10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,.04);
+        text-decoration:none;
+        font-weight:600;
+        font-size:13px;
+      }
+      .btn.primary{
+        background: linear-gradient(180deg, rgba(255,209,102,.22), rgba(255,209,102,.10));
+        border-color: rgba(255,209,102,.35);
+      }
+      .btn.secondary{
+        background: linear-gradient(180deg, rgba(142,202,230,.18), rgba(142,202,230,.08));
+        border-color: rgba(142,202,230,.30);
+      }
+      .countdown{
+        display:grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap:10px;
+        margin-top:12px;
+      }
+      .pill{
+        border:1px solid var(--line);
+        border-radius: 14px;
+        padding:10px 10px 12px;
+        text-align:center;
+        background: rgba(0,0,0,.12);
+      }
+      .pill b{display:block; font-size:22px; letter-spacing:.02em}
+      .pill span{display:block; font-size:12px; color:var(--muted); margin-top:2px}
+      .gallery{
+        display:grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap:10px;
+        margin-top:10px;
+      }
+      @media (min-width: 860px){
+        .gallery{grid-template-columns: repeat(4, 1fr);}
+      }
+      .ph{
+        aspect-ratio: 1/1;
+        border-radius: 16px;
+        border: 1px dashed rgba(255,255,255,.25);
+        background: rgba(255,255,255,.03);
+        display:flex; align-items:center; justify-content:center;
+        color: rgba(229,231,235,.55);
+        font-size:12px;
+        padding:10px;
+        text-align:center;
+      }
+      .small{font-size:12px}
+      footer{margin-top:22px; text-align:center; color:var(--muted); font-size:12px}
+      .guest{
+        font-size:14px;
+        margin-top:12px;
+        padding:10px 12px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(0,0,0,.12);
+      }
+      .guest b{color: var(--accent)}
+      .list{margin:0; padding-left:18px}
+      .list li{margin:6px 0}
+      .two-cols{
+        display:grid;
+        grid-template-columns: 1fr;
+        gap:10px;
+      }
+      @media (min-width: 860px){
+        .two-cols{grid-template-columns: 1fr 1fr;}
+      }
+      .kv{display:grid; grid-template-columns: 110px 1fr; gap:10px; font-size:14px}
+      .kv div{padding:2px 0}
+      .kv .k{color:var(--muted)}
+      .notice{
+        border-left:3px solid rgba(255,209,102,.6);
+        padding:10px 12px;
+        background: rgba(255,209,102,.08);
+        border-radius: 12px;
+      }
+      .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="wrap">
+        <div class="brand">
+          <b>Undangan Digital</b>
+          <div class="chip">
+            <span>Kepada Yth.</span>
+            <strong id="guestName">Tamu Undangan</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main class="wrap">
+      <section class="hero">
+        <div class="kicker">The Wedding of</div>
+        <div class="names">
+          <h1 id="nameA">Nama Pria</h1>
+          <h1 class="amp">&amp;</h1>
+          <h1 id="nameB">Nama Wanita</h1>
+        </div>
+        <p class="sub" id="heroDate">Sabtu, 06 Juni 2026</p>
+        <div class="guest" aria-live="polite">
+          <span class="muted">Kepada Yth. Bapak/Ibu/Saudara/i:</span>
+          <div><b id="guestName2">Tamu Undangan</b></div>
+          <div class="small muted">Tip: Anda bisa kirim link personal, contoh: <span class="mono">?to=AGUNG%20SQUAD</span></div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card col-12">
+          <h2>Kata-kata</h2>
+          <div class="notice">
+            “A great marriage isn’t something that just happens; it’s something that must be created.”
+            <div class="divider"></div>
+            <div class="muted small">Anda bisa ganti dengan ayat / kutipan / doa.</div>
+          </div>
+        </div>
+
+        <div class="card col-6">
+          <h2>Mempelai</h2>
+          <div class="two-cols">
+            <div>
+              <div class="muted small">Mempelai Pria</div>
+              <h3 style="margin:6px 0 2px" id="fullNameA">Nama Lengkap Pria</h3>
+              <div class="muted">Putra dari Bapak ... &amp; Ibu ...</div>
+            </div>
+            <div>
+              <div class="muted small">Mempelai Wanita</div>
+              <h3 style="margin:6px 0 2px" id="fullNameB">Nama Lengkap Wanita</h3>
+              <div class="muted">Putri dari Bapak ... &amp; Ibu ...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card col-6">
+          <h2>Countdown</h2>
+          <div class="muted">Menuju hari bahagia</div>
+          <div class="countdown" role="group" aria-label="Hitung mundur">
+            <div class="pill"><b id="cdDays">--</b><span>Hari</span></div>
+            <div class="pill"><b id="cdHours">--</b><span>Jam</span></div>
+            <div class="pill"><b id="cdMins">--</b><span>Menit</span></div>
+            <div class="pill"><b id="cdSecs">--</b><span>Detik</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="small muted">
+            Atur tanggal acara di bagian <span class="mono">CONFIG</span> pada JavaScript (di bawah).
+          </div>
+        </div>
+
+        <div class="card col-6">
+          <h2>Pemberkatan / Akad</h2>
+          <div class="kv">
+            <div class="k">Hari</div><div id="ceremonyDay">Sabtu</div>
+            <div class="k">Tanggal</div><div id="ceremonyDate">06 Juni 2026</div>
+            <div class="k">Jam</div><div id="ceremonyTime">11:00 WITA</div>
+            <div class="k">Lokasi</div><div id="ceremonyPlace">Nama tempat (contoh: Gereja / KUA / Rumah)</div>
+          </div>
+          <div class="btns">
+            <a class="btn secondary" id="ceremonyMaps" target="_blank" rel="noopener noreferrer" href="https://maps.google.com/">
+              Buka Maps
+            </a>
+          </div>
+          <div class="small muted" style="margin-top:8px">
+            Ganti link Maps di <span class="mono">CONFIG</span>.
+          </div>
+        </div>
+
+        <div class="card col-6">
+          <h2>Resepsi</h2>
+          <div class="kv">
+            <div class="k">Hari</div><div id="receptionDay">Sabtu</div>
+            <div class="k">Tanggal</div><div id="receptionDate">06 Juni 2026</div>
+            <div class="k">Jam</div><div id="receptionTime">18:00 WITA</div>
+            <div class="k">Lokasi</div><div id="receptionPlace">Nama gedung / alamat</div>
+          </div>
+          <div class="btns">
+            <a class="btn secondary" id="receptionMaps" target="_blank" rel="noopener noreferrer" href="https://maps.google.com/">
+              Buka Maps
+            </a>
+          </div>
+        </div>
+
+        <div class="card col-12">
+          <h2>Galeri</h2>
+          <div class="muted">Ganti placeholder ini dengan foto prewedding (bisa pakai gambar dari internet atau upload sendiri).</div>
+          <div class="gallery" aria-label="Galeri foto">
+            <div class="ph">Foto 1<br><span class="small">ganti jadi gambar</span></div>
+            <div class="ph">Foto 2<br><span class="small">ganti jadi gambar</span></div>
+            <div class="ph">Foto 3<br><span class="small">ganti jadi gambar</span></div>
+            <div class="ph">Foto 4<br><span class="small">ganti jadi gambar</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="small muted">
+            Paling mudah: ganti elemen galeri dengan tag <span class="mono">&lt;img src="..." /&gt;</span>.
+          </div>
+        </div>
+
+        <div class="card col-6">
+          <h2>Hadiah</h2>
+          <div class="muted">Opsional. Anda bisa isi nomor rekening / e-wallet.</div>
+          <div class="divider"></div>
+          <ul class="list">
+            <li><b>Bank:</b> BCA</li>
+            <li><b>Nama:</b> Nama Pemilik Rekening</li>
+            <li><b>No. Rek:</b> 1234567890</li>
+          </ul>
+          <div class="small muted" style="margin-top:10px">
+            Jika tidak ingin tampilkan gift, Anda bisa hapus bagian ini.
+          </div>
+        </div>
+
+        <div class="card col-6">
+          <h2>RSVP &amp; Ucapan</h2>
+          <div class="muted">Karena ini website statis (gratis), cara paling mudah adalah pakai WhatsApp atau Google Form.</div>
+          <div class="btns">
+            <a class="btn primary" id="rsvpWa" target="_blank" rel="noopener noreferrer" href="https://wa.me/6280000000000">
+              Konfirmasi via WhatsApp
+            </a>
+            <a class="btn" id="wishWa" target="_blank" rel="noopener noreferrer" href="https://wa.me/6280000000000">
+              Kirim Ucapan
+            </a>
+            <a class="btn" id="rsvpForm" target="_blank" rel="noopener noreferrer" href="https://forms.gle/">
+              RSVP via Google Form
+            </a>
+          </div>
+          <div class="divider"></div>
+          <div class="small muted">
+            Anda cukup ganti nomor WA dan link Google Form di <span class="mono">CONFIG</span>.
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div>Terima kasih atas doa dan kehadirannya.</div>
+        <div style="margin-top:8px" class="muted small">
+          Dibuat dari template HTML sederhana. Anda bisa ubah warna, teks, dan fitur sesuka hati.
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      // =========================
+      // CONFIG (ubah bagian ini)
+      // =========================
+      const CONFIG = {
+        couple: {
+          nameA: "Jimmy",
+          nameB: "Feisy",
+          fullNameA: "Jimmy Marcelino Poli",
+          fullNameB: "Feisy Sisilia Rambitan",
+        },
+        // Tanggal acara untuk countdown (format: "YYYY-MM-DDTHH:mm:ss+TZ")
+        // Contoh WITA (UTC+08:00): "2026-06-06T11:00:00+08:00"
+        countdownTo: "2026-06-06T11:00:00+08:00",
+        heroDateText: "Sabtu, 06 Juni 2026",
+        ceremony: {
+          day: "Sabtu",
+          date: "06 Juni 2026",
+          time: "11:00 WITA",
+          place: "Gereja / KUA / Rumah",
+          mapsUrl: "https://maps.google.com/",
+        },
+        reception: {
+          day: "Sabtu",
+          date: "06 Juni 2026",
+          time: "18:00 WITA",
+          place: "Gedung / Alamat resepsi",
+          mapsUrl: "https://maps.google.com/",
+        },
+        contact: {
+          // Format nomor WA: 62xxxxxxxxxx (tanpa 0 di depan)
+          waNumber: "6280000000000",
+          // Opsional: link RSVP (Google Form)
+          rsvpFormUrl: "https://forms.gle/",
+        },
+      };
+
+      // =========================
+      // PERSONALISASI TAMU: ?to=Nama
+      // =========================
+      const params = new URLSearchParams(window.location.search);
+      const toParam = params.get("to");
+      const guest = (toParam && toParam.trim()) ? decodeURIComponent(toParam) : "Tamu Undangan";
+      document.getElementById("guestName").textContent = guest;
+      document.getElementById("guestName2").textContent = guest;
+
+      // =========================
+      // ISI NAMA & DETAIL
+      // =========================
+      document.getElementById("nameA").textContent = CONFIG.couple.nameA;
+      document.getElementById("nameB").textContent = CONFIG.couple.nameB;
+      document.getElementById("fullNameA").textContent = CONFIG.couple.fullNameA;
+      document.getElementById("fullNameB").textContent = CONFIG.couple.fullNameB;
+      document.getElementById("heroDate").textContent = CONFIG.heroDateText;
+
+      document.getElementById("ceremonyDay").textContent = CONFIG.ceremony.day;
+      document.getElementById("ceremonyDate").textContent = CONFIG.ceremony.date;
+      document.getElementById("ceremonyTime").textContent = CONFIG.ceremony.time;
+      document.getElementById("ceremonyPlace").textContent = CONFIG.ceremony.place;
+      document.getElementById("ceremonyMaps").href = CONFIG.ceremony.mapsUrl;
+
+      document.getElementById("receptionDay").textContent = CONFIG.reception.day;
+      document.getElementById("receptionDate").textContent = CONFIG.reception.date;
+      document.getElementById("receptionTime").textContent = CONFIG.reception.time;
+      document.getElementById("receptionPlace").textContent = CONFIG.reception.place;
+      document.getElementById("receptionMaps").href = CONFIG.reception.mapsUrl;
+
+      // WA buttons dengan pesan otomatis (termasuk nama tamu)
+      const wa = CONFIG.contact.waNumber;
+      const baseWa = `https://wa.me/${wa}`;
+      const rsvpText = encodeURIComponent(
+        `Halo, saya ${guest}. Saya ingin konfirmasi kehadiran untuk acara pernikahan ${CONFIG.couple.nameA} & ${CONFIG.couple.nameB}.`
+      );
+      const wishText = encodeURIComponent(
+        `Halo ${CONFIG.couple.nameA} & ${CONFIG.couple.nameB}, saya ${guest}. Selamat menempuh hidup baru. Semoga bahagia selalu.`
+      );
+      document.getElementById("rsvpWa").href = `${baseWa}?text=${rsvpText}`;
+      document.getElementById("wishWa").href = `${baseWa}?text=${wishText}`;
+      document.getElementById("rsvpForm").href = CONFIG.contact.rsvpFormUrl;
+
+      // =========================
+      // COUNTDOWN
+      // =========================
+      const target = new Date(CONFIG.countdownTo).getTime();
+      const pad2 = (n) => String(n).padStart(2, "0");
+
+      function tick(){
+        const now = Date.now();
+        let diff = Math.max(0, target - now);
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        diff -= days * (1000 * 60 * 60 * 24);
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        diff -= hours * (1000 * 60 * 60);
+        const mins = Math.floor(diff / (1000 * 60));
+        diff -= mins * (1000 * 60);
+        const secs = Math.floor(diff / 1000);
+
+        document.getElementById("cdDays").textContent = pad2(days);
+        document.getElementById("cdHours").textContent = pad2(hours);
+        document.getElementById("cdMins").textContent = pad2(mins);
+        document.getElementById("cdSecs").textContent = pad2(secs);
+      }
+      tick();
+      setInterval(tick, 1000);
+    </script>
+  </body>
+</html>
+
